@@ -34,6 +34,7 @@
   * [🖥️ Oracle Voter Setup](testnet/symphony/oracle-voter-setup.md)
   * [📝 Cheat Sheet](testnet/symphony/cheat-sheet.md)
   * [⚠️ Node Deletion](testnet/symphony/node-deletion.md)
+* [Blockcast Beacon](testnet/blockcast-beacon.md)
 * [Nillion Verifier](testnet/nillion-verifier/README.md)
   * [🖥️ Installation](testnet/nillion-verifier/installation.md)
   * [🖥️ Update Verifier](testnet/nillion-verifier/update-verifier.md)
