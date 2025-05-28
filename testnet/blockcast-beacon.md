@@ -7,7 +7,7 @@ description: >-
 
 # Blockcast Beacon
 
-## Register Dashboard
+Register Dashboard
 
 Make sure to register your [Blockcast](https://app.blockcast.network/?referral-code=ESuQld) account first before getting started.
 
@@ -37,7 +37,7 @@ You should see output like `Docker version 27.1.2, build d01f264`
 
 ```
 git clone https://github.com/Blockcast/beacon-docker-compose.git
-cd blockcast
+cd beacon-docker-compose
 ```
 
 ## Run the Blockcast Beacon container
@@ -49,6 +49,8 @@ docker compose up -d
 {% hint style="info" %}
 Before starting the node, ensure port 8080 is free. If it's in use, edit the configuration file using `nano docker-compose.yml` and change the port mapping from `8080:8080` to `8081:8080`
 {% endhint %}
+
+<div align="left"><figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure></div>
 
 ## Check Beacon containers
 

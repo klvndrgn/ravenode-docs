@@ -106,7 +106,7 @@ You should see output like `websocat 1.13.0`
 * Create new stash account
 * Choose **Stash** account, then fill the amount to bond (Minimum **0.9 TANLOG)**
 
-<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="warning" %}
 Validators must have a minimum stash in their accounts (0.9 TANLOG)
