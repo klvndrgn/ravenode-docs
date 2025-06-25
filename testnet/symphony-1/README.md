@@ -9,9 +9,9 @@ coverY: 0
 
 # Symphony
 
-| Chain ID           | Latest Version | RPC Status |
-| ------------------ | -------------- | ---------- |
-| symphony-testnet-4 | 0.4.1          | 🔴Inactive |
+| Chain ID   | Latest Version | RPC Status |
+| ---------- | -------------- | ---------- |
+| symphony-1 | 1.0.0          | 🟢Active   |
 
 ## Chain Explorer
 
@@ -25,5 +25,5 @@ coverY: 0
 ## Seed Node
 
 ```
-46230ac4af10b6c50454c7874f07d50d3db297a2@185.227.135.165:26656
+d45190c9ce7cff612154710f22137ce7ea0096ee@185.227.135.165:12056
 ```
