@@ -9,9 +9,9 @@ coverY: 0
 
 # Symphony
 
-| Chain ID             | Latest Version | RPC Status |
-| -------------------- | -------------- | ---------- |
-| symphony-testnet-4-1 | 0.4.1          | 🔴Inactive |
+| Chain ID           | Latest Version | RPC Status |
+| ------------------ | -------------- | ---------- |
+| symphony-testnet-4 | 0.4.1          | 🔴Inactive |
 
 ## Chain Explorer
 
