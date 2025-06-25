@@ -31,15 +31,17 @@
   * [⚠️ Validator Deletion](testnet/dill/validator-deletion.md)
 * [Symphony](testnet/symphony/README.md)
   * [🖥️ Installation](testnet/symphony/installation.md)
-  * [🖥️ Oracle Voter Setup](testnet/symphony/oracle-voter-setup.md)
   * [📝 Cheat Sheet](testnet/symphony/cheat-sheet.md)
   * [⚠️ Node Deletion](testnet/symphony/node-deletion.md)
-* [Symphony](testnet/symphony-1/README.md)
-  * [🖥️ Installation](testnet/symphony-1/installation.md)
-  * [📝 Cheat Sheet](testnet/symphony-1/cheat-sheet.md)
-  * [⚠️ Node Deletion](testnet/symphony-1/node-deletion.md)
 * [Nillion Verifier](testnet/nillion-verifier/README.md)
   * [🖥️ Installation](testnet/nillion-verifier/installation.md)
   * [🖥️ Update Verifier](testnet/nillion-verifier/update-verifier.md)
   * [⚠️ Verifier Deletion](testnet/nillion-verifier/verifier-deletion.md)
 * [Blockcast Beacon](testnet/blockcast-beacon.md)
+
+## MAINNET
+
+* [Symphony](mainnet/symphony/README.md)
+  * [🖥️ Installation](mainnet/symphony/installation.md)
+  * [📝 Cheat Sheet](mainnet/symphony/cheat-sheet.md)
+  * [⚠️ Node Deletion](mainnet/symphony/node-deletion.md)

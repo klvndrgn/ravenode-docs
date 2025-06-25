@@ -7,9 +7,7 @@
 ## Install Dependencies <a href="#install-dependencies" id="install-dependencies"></a>
 
 ```
-sudo apt -q update
-sudo apt -qy install curl git jq lz4 build-essential
-sudo apt -qy upgrade
+sudo apt update && sudo apt upgrade -y && sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
 ```
 
 ### Configure Moniker
@@ -27,7 +25,7 @@ eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/gola
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 ```
 
-### Download and Build Binaries
+### Download and Install Binaries
 
 ```
 # Clone project repository
@@ -35,62 +33,21 @@ cd $HOME
 rm -rf symphony
 git clone https://github.com/Orchestra-Labs/symphony
 cd symphony
-git checkout v0.4.1
+git checkout v1.0.0
 
 # Build binaries
-make build
-
-# Prepare binaries for Cosmovisor
-mkdir -p $HOME/.symphonyd/cosmovisor/genesis/bin
-mv build/symphonyd $HOME/.symphonyd/cosmovisor/genesis/bin/
-rm -rf build
-
-# Create application symlinks
-sudo ln -s $HOME/.symphonyd/cosmovisor/genesis $HOME/.symphonyd/cosmovisor/current -f
-sudo ln -s $HOME/.symphonyd/cosmovisor/current/bin/symphonyd /usr/local/bin/symphonyd -f
-```
-
-### Install Cosmovisor and create daemon service
-
-```
-# Download and install Cosmovisor
-go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.6.0
-
-# Create service
-sudo tee /etc/systemd/system/symphony.service > /dev/null << EOF
-[Unit]
-Description=symphony node service
-After=network-online.target
- 
-[Service]
-User=$USER
-ExecStart=$(which cosmovisor) run start
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=65535
-Environment="DAEMON_HOME=$HOME/.symphonyd"
-Environment="DAEMON_NAME=symphonyd"
-Environment="UNSAFE_SKIP_BACKUP=true"
-Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.symphonyd/cosmovisor/current/bin"
- 
-[Install]
-WantedBy=multi-user.target
-EOF
-
-# Enable Service
-sudo systemctl daemon-reload
-sudo systemctl enable symphony.service
+make install
 ```
 
 ## Initialize the node
 
 ```
 # Set node configuration
-symphonyd config chain-id symphony-testnet-4
+symphonyd config chain-id symphony-1
 symphonyd config keyring-backend test
 
 # Initialize the node
-symphonyd init $MONIKER --chain-id symphony-testnet-4
+symphonyd init $MONIKER --chain-id symphony-1
 
 # Download genesis and addrbook
 curl -Ls https://snapshot.ravenode.xyz/symphony/genesis.json > $HOME/.symphonyd/config/genesis.json
@@ -101,15 +58,41 @@ PEERS="$(curl -sS https://rpc.symphony.ravenode.xyz/net_info | jq -r '.result.pe
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.symphonyd/config/config.toml
 
 # Set minimum gas price
-sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0note\"|" $HOME/.symphonyd/config/app.toml
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.00025note\"|" $HOME/.symphonyd/config/app.toml
+
+# Enable Prometheus
+sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.symphonyd/config/config.toml
+
+# Disable the Indexer
+sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.symphonyd/config/config.toml
 
 # Set pruning
 sed -i \
   -e 's|^pruning *=.*|pruning = "custom"|' \
   -e 's|^pruning-keep-recent *=.*|pruning-keep-recent = "100"|' \
   -e 's|^pruning-keep-every *=.*|pruning-keep-every = "0"|' \
-  -e 's|^pruning-interval *=.*|pruning-interval = "19"|' \
+  -e 's|^pruning-interval *=.*|pruning-interval = "17"|' \
   $HOME/.symphonyd/config/app.toml
+```
+
+## Create Service File
+
+```
+sudo tee /etc/systemd/system/symphonyd.service > /dev/null <<EOF
+[Unit]
+Description=symphony mainnet
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which symphonyd) start
+Restart=always
+RestartSec=3
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+EOF
 ```
 
 ## Download Latest Snapshot & extract the file
@@ -122,7 +105,7 @@ curl -L https://snapshot.ravenode.xyz/symphony/symphony-latest.tar.lz4 | tar -Il
 ## Start Service & Check Node Logs
 
 ```
-sudo systemctl restart symphony.service && sudo journalctl -u symphony.service -f --no-hostname -o cat
+sudo systemctl daemon-reload && sudo systemctl enable symphonyd.service && sudo systemctl restart symphonyd.service && sudo journalctl -u symphonyd.service -f --no-hostname -o cat
 ```
 
 ## Verify node's block height sync
@@ -185,7 +168,7 @@ symphonyd keys list
 
 ### 2. Fund a wallet
 
-To create a validator, you need to fund the previously created wallet using [https://testnet.ping.pub/symphony/faucet](https://testnet.ping.pub/symphony/faucet)
+To create a validator, you need to fund the previously created wallet
 
 To check wallet balance use command below
 
@@ -219,9 +202,9 @@ Copy the following command and paste it into the `validator.json` file:
     "identity": "your-keybase-id",
     "website": "your-website",
     "details": "your-details",
-    "commission-rate": "0.05",
+    "commission-rate": "0.10",
     "commission-max-rate": "0.2",
-    "commission-max-change-rate": "0.01",
+    "commission-max-change-rate": "0.10",
     "min-self-delegation": "1"
 }
 ```
@@ -235,24 +218,12 @@ Run the create validator command:
 ```
 symphonyd tx staking create-validator $HOME/.symphonyd/validator.json \
 --from=wallet \
---chain-id=symphony-testnet-4 \
+--chain-id=symphony-1 \
 --gas-adjustment 1.5 \
---gas-prices 0.025note \
+--gas-prices 0.0025note \
 --gas auto
 ```
 
 {% hint style="danger" %}
 Save the \~/.symphonyd/config/priv\_validator\_key.json file as this is the only way to recover your validator signing key in case you lose it!
 {% endhint %}
-
-## Fill Validator Form
-
-Once your node is synced and you've successfully created a validator, please fill out this form to receive additional faucet tokens for validator bonding: [https://forms.gle/98ajH8wXCowVnGZi6](https://forms.gle/98ajH8wXCowVnGZi6)
-
-Join Symphony [Discord](https://discord.gg/gRTXEGrc) and receive **Validator** role, submit your validator link and tag the team.
-
-<figure><img src="../../.gitbook/assets/HCA logo.jpg" alt="" width="160"><figcaption></figcaption></figure>
-
-{% embed url="https://t.me/HappyCuanAirdrop" %}
-Join our Telegram group for the latest updates and discussions!
-{% endembed %}
