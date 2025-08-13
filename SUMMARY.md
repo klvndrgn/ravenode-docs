@@ -45,3 +45,7 @@
   * [🖥️ Installation](mainnet/symphony/installation.md)
   * [📝 Cheat Sheet](mainnet/symphony/cheat-sheet.md)
   * [⚠️ Node Deletion](mainnet/symphony/node-deletion.md)
+* [BitBadges](mainnet/bitbadges/README.md)
+  * [🖥️ Installation](mainnet/bitbadges/installation.md)
+  * [📝 Cheat Sheet](mainnet/bitbadges/cheat-sheet.md)
+  * [⚠️ Node Deletion](mainnet/bitbadges/node-deletion.md)

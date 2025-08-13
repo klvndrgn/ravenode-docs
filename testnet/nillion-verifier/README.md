@@ -5,20 +5,6 @@ description: >-
   mainnet launch
 cover: ../../.gitbook/assets/GV_gSz7W8AAYE1a.jpg
 coverY: -131.01487603305787
-layout:
-  cover:
-    visible: true
-    size: full
-  title:
-    visible: true
-  description:
-    visible: true
-  tableOfContents:
-    visible: true
-  outline:
-    visible: true
-  pagination:
-    visible: true
 ---
 
 # Nillion Verifier
