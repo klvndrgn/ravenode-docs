@@ -43,6 +43,7 @@
 
 * [Symphony](mainnet/symphony/README.md)
   * [🖥️ Installation](mainnet/symphony/installation.md)
+  * [🖥️ Oracle Voter Setup](mainnet/symphony/oracle-voter-setup.md)
   * [📝 Cheat Sheet](mainnet/symphony/cheat-sheet.md)
   * [⚠️ Node Deletion](mainnet/symphony/node-deletion.md)
 * [BitBadges](mainnet/bitbadges/README.md)
